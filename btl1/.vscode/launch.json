@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "configurations": [
+        {
+            "name": "Debug ANTLR4 grammar",
+            "type": "antlr-debug",
+            "request": "launch",
+            "input": "/Users/xuanloc/Documents/PPL/btl1/test/Parser/input/test_001.txt",
+            "grammar": "/Users/xuanloc/Documents/PPL/btl1/main/MiniGo.g4",
+            "printParseTree": true,
+            "visualParseTree": true
+        }
+    ]
+}
