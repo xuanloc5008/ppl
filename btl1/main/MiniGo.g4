@@ -56,6 +56,7 @@ liter:INT_LIT
 	   | STRING_LIT
 	   | TRUE
 	   | FALSE
+	   | NIL
 	   | arr_liter
 	   | struct_literal;
 
@@ -97,12 +98,17 @@ struct_literal: ID LCP list_ele_lit? RCP;
 list_ele_lit: list_ele COMMA list_ele_lit | list_ele;
 list_ele: ID COLON expr;
 //Array literal
-arr_liter: dim_lit all_type LCP list_arr_ele RCP;
+arr_liter: dim_lit all_type LCP list_arr_ele? RCP;
 dim_lit: dim dim_lit | dim;
 dim: LSP INT_LIT RSP;
-arr_ele: liter | LCP list_liter RCP;
-list_arr_ele: arr_ele COMMA list_arr_ele | arr_ele;
+arr_ele: liter
+       | struct_literal
+       | ID LCP list_arr_ele? RCP
+       | LCP list_arr_ele? RCP;
+
+list_arr_ele: arr_ele (COMMA list_arr_ele)?;
 //Expression
+
 list_expr: expr COMMA list_expr | expr;
 expr: expr OR expr1 | expr1;
 expr1: expr1 AND expr2 | expr2;
@@ -128,6 +134,12 @@ list_ID: ID COMMA list_ID | ID;
 method_decl: FUNC LP ID ID RP ID LP param_lit? RP all_type? ignore LCP (NEWLINE | list_statement)* RCP SEMICOLON;
 //struct declared
 struct_decl: TYPE ID STRUCT LCP list_statement RCP SEMICOLON;
+struct_body: struct_member*;
+struct_member:
+    struct_statements SEMICOLON   // Fields inside struct
+    | method_decl                  // Methods inside struct
+    ;
+
 //interface_declared
 interface_decl: TYPE ID INTERFACE LCP list_statement RCP SEMICOLON;
 //list statement
@@ -245,16 +257,18 @@ fragment ESC_ILLEGAL: '\\' ~[ntr"\\];
 BOOL_LIT: TRUE | FALSE;
 NIL_LIT: NIL;
 
-NEWLINE: '\r'? '\n'{
-    if self.preType in [self.ID, self.INT_LIT, self.BIN_LIT, self.OCT_LIT, self.HEX_LIT, self.STRING_LIT, self.FLOAT_LIT,
+NEWLINE: '\r'? '\n' {
+    if self.preType in [self.ID, self.INT_LIT, self.BIN_LIT, self.OCT_LIT,
+                        self.HEX_LIT, self.STRING_LIT, self.FLOAT_LIT,
                         self.TRUE, self.FALSE, self.INT, self.FLOAT, self.STRING, self.BOOLEAN, self.NIL,
-                        self.RETURN, self.CONTINUE, self.BREAK,
+                        self.RETURN, self.CONTINUE, self.BREAK, self.CONST,
                         self.RP, self.RCP, self.RSP]:
         self.text = ";"
         self.type = self.SEMICOLON
     else:
         self.skip()
 };
+
 WS: [ \t\f\r]+ -> skip;
 COMMENT_LINE: '//' ~[\n]* -> skip;
 COMMENT: ('/*' (COMMENT | .)*? '*/') -> skip;

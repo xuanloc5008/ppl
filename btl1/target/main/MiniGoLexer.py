@@ -413,9 +413,10 @@ class MiniGoLexer(Lexer):
     def NEWLINE_action(self, localctx:RuleContext , actionIndex:int):
         if actionIndex == 1:
 
-                if self.preType in [self.ID, self.INT_LIT, self.BIN_LIT, self.OCT_LIT, self.HEX_LIT, self.STRING_LIT, self.FLOAT_LIT,
+                if self.preType in [self.ID, self.INT_LIT, self.BIN_LIT, self.OCT_LIT,
+                                    self.HEX_LIT, self.STRING_LIT, self.FLOAT_LIT,
                                     self.TRUE, self.FALSE, self.INT, self.FLOAT, self.STRING, self.BOOLEAN, self.NIL,
-                                    self.RETURN, self.CONTINUE, self.BREAK,
+                                    self.RETURN, self.CONTINUE, self.BREAK, self.CONST,
                                     self.RP, self.RCP, self.RSP]:
                     self.text = ";"
                     self.type = self.SEMICOLON
