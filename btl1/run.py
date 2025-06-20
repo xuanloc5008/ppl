@@ -1,25 +1,3 @@
-"""
- * Initial code for Assignment 1, 2
- * file : run.py
- * Programming Language Principles
- * Author: Võ Tiến
- * Link FB : https://www.facebook.com/Shiba.Vo.Tien
- * Link Group : https://www.facebook.com/groups/khmt.ktmt.cse.bku
- * Date: 07.01.2025
- 
- * install extension ANTLR4 grammar syntax support, Better Comments
- * run code
-    Usage:
-    python3 run.py gen                            # Generate required files
-    python3 run.py test LexerSuite [test_case]    # Run LexerSuite tests (test_case is optional)
-    python3 run.py test ParserSuite [test_case]   # Run ParserSuite tests (test_case is optional)
-    python3 run.py test ASTGenSuite [test_case]   # Run ASTGenSuite tests (test_case is optional)
-
-    Notes:
-    - Replace [test_case] with the specific test you want to run, e.g., test_1.
-    - If [test_case] is not provided, all tests in the suite will be executed.
-"""
-
 import sys
 import os
 import subprocess
